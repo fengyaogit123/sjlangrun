@@ -1,10 +1,128 @@
-<!DOCTYPE html><html><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><title>正月十五花灯照，小招邀您庆元宵！</title><meta itemprop=name content=正月十五花灯照，小招邀您庆元宵！><meta itemprop=image content=static/image/icon.jpg><meta name=description content=" "><meta name=viewport content="width=device-width,initial-scale=1,user-scalable=0"><meta content="telephone=no,email=no" name=format-detection><meta name=App-Config content="fullscreen=yes,useHistoryState=yes,transition=yes"><meta name=apple-mobile-web-app-capable content=yes><style>#mask {width: 100%;position: fixed;left: 0;right: 0;top: 0;bottom: 0;background-color: #fff;z-index: 99}
-        #mask,
-        #mask-box {height: 100%;}
-        #mask-box {-webkit-box-orient: vertical;-webkit-box-direction: normal;-webkit-flex-direction: column;flex-direction: column;-webkit-box-flex: 1;-webkit-flex: 1;flex: 1}
-        #mask-box img {display: block;width: 20%}
-        #mask-box p {font-size: 13px;color: rgba(0, 0, 0, .65);height:40px;line-height: 40px;}
-        @media all and (orientation : portrait){ 
-            #mask-box{-webkit-transform: rotate(90deg);transform: rotate(90deg);}
-            #mask-box img{width: 70%;}
-        }</style><link href=static/css/app.62052b0f2daa34270976e5df736a1619.css rel=stylesheet></head><body><div style=display:none><img src=http://www.mspee.com/static/image/icon.jpg width=0 height=0 alt=""></div><audio id=audio_1 src=static/audio/bgnew.mp3 preload=auto loop=loop></audio><audio id=audio_2 src=static/audio/ca.mp3 preload=auto></audio><audio id=audio_3 src=static/audio/lh.mp3 preload=auto></audio><audio id=keyboard_4 src=static/audio/keyboard.mp3 preload=auto></audio><audio id=bus_6 src=static/audio/bus.mp3 preload=auto></audio><div id=app class=visi-hide></div><div id=mask class=fade-int><div id=mask-box style="display: -webkit-box;display: -webkit-flex;display: flex;-webkit-box-pack: center;-webkit-justify-content: center;justify-content: center;-webkit-box-align: center;-webkit-align-items: center;align-items: center"><img draggable=false class=f src=static/image/logo.png alt=""><p style=font-size:12px;height:40px;line-height:40px; id=progress>0%</p></div></div><script src=static/wx.js></script><script type=text/javascript src=static/js/app.ac6c2ec537834f9f335f.js></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        .box {
+            display: flex;
+            height: 100%;
+            padding: 32px;
+        }
+
+        #app,
+        #text {
+            flex: 1;
+            height: 100%;
+            padding: 32px;
+            background-color: transparent;
+        }
+
+        .tag {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border-radius: 50px;
+            box-shadow: 10px 10px 10px rgba(0, 0, 0, .1);
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .tag:hover {
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div id="app">
+            <input id="color">
+            <button id="btn2">自定义颜色</button>
+            <span class="tag" style="background-color: #000000"></span>
+            <span class="tag" style="background-color: #ffffff"></span>
+            <span class="tag" style="background-color: #ff0000"></span>
+            <span class="tag" style="background-color: #0f03ff"></span>
+            <span class="tag" style="background-color: #03ff6e"></span>
+            <div id="inner-app">
+                <lottie-player src="/Assets/json/server.json" background="transparent" speed="1" loop autoplay>
+                </lottie-player>
+            </div>
+        </div>
+        <!-- <textarea id="text" placeholder="贴入 json 点击开始预览"></textarea> -->
+        <div id="text" class="drag">
+            <input id="file" type="file" accept=".json" />
+        </div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/lottie-web/5.10.0/lottie.min.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@1.5.7/dist/lottie-player.js"></script>
+
+    <script>
+
+        document.querySelectorAll('.tag').forEach(item => {
+            item.addEventListener('click', () => {
+                document.body.style.background = item.style.backgroundColor
+            })
+        })
+
+        document.querySelector('#btn2').addEventListener('click', () => {
+            document.body.style.background = document.querySelector('#color').value
+        })
+        document.querySelector('#file').addEventListener('change', (e) => {
+            updateAnim(e.target.files[0])
+        })
+
+        function updateAnim(file){
+            document.querySelector('#inner-app').innerHTML = ''
+            const url = URL.createObjectURL(file)
+            const el = document.createElement('lottie-player')
+            el.src = url
+            el.setAttribute('background', 'transparent')
+            el.setAttribute('speed', '1')
+            el.setAttribute('loop', 'true')
+            el.setAttribute('autoplay', 'true')
+            el.setAttribute('controls', 'true')
+            document.querySelector('#inner-app').appendChild(el)
+        }
+
+        const dropBox= document.querySelector('.drag')
+        dropBox.addEventListener("dragenter", dragEnter, false);
+        dropBox.addEventListener("dragover", dragOver, false);
+        dropBox.addEventListener("drop", drop, false);
+
+        function dragEnter(e) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
+
+        function dragOver(e) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
+
+        function drop(e) {
+            const files = e.dataTransfer.files;
+            updateAnim(files[0])
+            e.stopPropagation();
+            e.preventDefault();
+        }
+
+        
+    </script>
+</body>
+
+</html>
